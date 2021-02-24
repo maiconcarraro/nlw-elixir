@@ -5,6 +5,10 @@ defmodule Rocketpay.Numbers do
     |> handle_file()
   end
 
+  def sum(x, y) do
+    x + y
+  end
+
   defp handle_file({:ok, result}) do
     result =
       result
