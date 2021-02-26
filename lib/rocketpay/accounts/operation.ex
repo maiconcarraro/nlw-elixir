@@ -1,7 +1,7 @@
 defmodule Rocketpay.Accounts.Operation do
   alias Ecto.Multi
 
-  alias Rocketpay.{Account, Repo}
+  alias Rocketpay.Account
 
   def call(%{"id" => id, "value" => value}, operation) do
     operation_name = account_operation_name(operation)
@@ -43,7 +43,7 @@ defmodule Rocketpay.Accounts.Operation do
 
   defp handle_cast({:ok, value}, balance, :deposit), do: Decimal.add(balance, value)
   defp handle_cast({:ok, value}, balance, :withdraw), do: Decimal.sub(balance, value)
-  defp handle_cast(:error, _balance, _operation), do: {:error, "Invalid withdraw value!"}
+  defp handle_cast(:error, _balance, operation), do: {:error, "Invalid #{operation} value!"}
 
   defp update_account({:error, _reason} = error, _repo, _account), do: error
 
