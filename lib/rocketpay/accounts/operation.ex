@@ -31,7 +31,14 @@ defmodule Rocketpay.Accounts.Operation do
   defp operation(%Account{balance: balance}, value, operation) do
     value
     |> Decimal.cast()
+    |> validate_number()
     |> handle_cast(balance, operation)
+  end
+
+  defp validate_number(:error = error), do: error
+
+  defp validate_number({:ok, value} = decimal) do
+    if Decimal.lt?(value, 0), do: :error, else: decimal
   end
 
   defp handle_cast({:ok, value}, balance, :deposit), do: Decimal.add(balance, value)
