@@ -1,19 +1,15 @@
 defmodule RocketpayWeb.AccountsControllerTest do
   use RocketpayWeb.ConnCase, async: true
 
+  import Rocketpay.Factory
+
   alias Rocketpay.{User, Account}
 
   describe "deposit/2" do
     setup %{conn: conn} do
-      params = %{
-        name: "Maicon",
-        password: "123456",
-        nickname: "maicon",
-        email: "maicon@teste.com",
-        age: 27
-      }
-
-      {:ok, %User{account: %Account{id: account_id}}} = Rocketpay.create_user(params)
+      {:ok, %User{account: %Account{id: account_id}}} =
+        valid_user_params()
+        |> Rocketpay.create_user()
 
       conn = put_req_header(conn, "authorization", "Basic YmFuYW5hOm5hbmljYTEyMw==")
 

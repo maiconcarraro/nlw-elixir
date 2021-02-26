@@ -1,22 +1,17 @@
 defmodule RocketpayWeb.UsersViewTest do
   use RocketpayWeb.ConnCase, async: true
 
+  import Rocketpay.Factory
+
   alias Rocketpay.{Account, User}
   alias RocketpayWeb.UsersView
 
   import Phoenix.View
 
   test "renders create.json" do
-    params = %{
-      name: "Maicon",
-      password: "123456",
-      nickname: "maicon",
-      email: "maicon@teste.com",
-      age: 27
-    }
-
     {:ok, %User{id: user_id, account: %Account{id: account_id}} = user} =
-      Rocketpay.create_user(params)
+      valid_user_params()
+      |> Rocketpay.create_user()
 
     response = render(UsersView, "create.json", user: user)
 
